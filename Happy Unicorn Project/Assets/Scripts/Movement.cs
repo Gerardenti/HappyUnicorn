@@ -25,7 +25,7 @@ public class Movement : MonoBehaviour
     private KeyCode downButton = KeyCode.S;
     private KeyCode rightButton = KeyCode.D;
 
-    private KeyCode hornButton = KeyCode.P;
+    //private KeyCode hornButton = KeyCode.P;
 
     public int chargeNumber;
 
