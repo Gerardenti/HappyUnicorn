@@ -13,8 +13,12 @@ public class Movement : MonoBehaviour
     private float currentSpeedH = 0.0f;
     private Rigidbody2D rigidBody;
 
+    public ChargePixie chargePixie;
+
     //public bool onFloor;
     public int numCharge;
+
+    public static Movement Instance{get; private set;}
 
     private KeyCode upButton = KeyCode.W;
     private KeyCode leftButton = KeyCode.A;
@@ -23,6 +27,17 @@ public class Movement : MonoBehaviour
 
     private KeyCode hornButton = KeyCode.P;
 
+    public int chargeNumber;
+
+    private void Awake()
+    {
+        chargeNumber = 0;
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -84,6 +99,7 @@ public class Movement : MonoBehaviour
     {
         if (other.tag == "Pixie"){
             numCharge++;
+            chargePixie.chargeNumber++;
             other.gameObject.SetActive(false);
         }
     }
