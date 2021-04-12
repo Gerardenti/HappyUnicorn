@@ -68,3 +68,4 @@ public class Movement : MonoBehaviour
         rigidBody.velocity = new Vector2(currentSpeedH, currentSpeedV) * delta;
     }
 }
+//
