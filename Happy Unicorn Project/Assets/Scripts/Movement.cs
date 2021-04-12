@@ -13,10 +13,15 @@ public class Movement : MonoBehaviour
     private float currentSpeedH = 0.0f;
     private Rigidbody2D rigidBody;
 
-    private KeyCode jumpButton = KeyCode.W;
+    //public bool onFloor;
+    public int numCharge;
+
+    private KeyCode upButton = KeyCode.W;
     private KeyCode leftButton = KeyCode.A;
+    private KeyCode downButton = KeyCode.S;
     private KeyCode rightButton = KeyCode.D;
-    private KeyCode hornButton = KeyCode.Space;
+
+    private KeyCode hornButton = KeyCode.P;
 
     // Start is called before the first frame update
     void Start()
@@ -30,9 +35,13 @@ public class Movement : MonoBehaviour
         float delta = Time.deltaTime * 1000;
         uniDirection = Direction.NONE;
 
-        if (Input.GetKey(jumpButton))
+        if (Input.GetKey(upButton))
         {
-            uniDirection = Direction.UP; //Jump
+            uniDirection = Direction.UP;
+        }
+        else if (Input.GetKey(downButton))
+        {
+            uniDirection = Direction.DOWN;
         }
 
         if (Input.GetKey(leftButton))
@@ -56,7 +65,10 @@ public class Movement : MonoBehaviour
         {
             default: break;
             case Direction.UP:
-                currentSpeedV = baseSpeed; //Jump
+                currentSpeedV = baseSpeed;
+                break;
+            case Direction.DOWN:
+                currentSpeedV = -baseSpeed;
                 break;
             case Direction.LEFT:
                 currentSpeedH = -baseSpeed;
@@ -66,6 +78,14 @@ public class Movement : MonoBehaviour
                 break;
         }
         rigidBody.velocity = new Vector2(currentSpeedH, currentSpeedV) * delta;
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.tag == "Pixie"){
+            numCharge++;
+            other.gameObject.SetActive(false);
+        }
     }
 }
 //
