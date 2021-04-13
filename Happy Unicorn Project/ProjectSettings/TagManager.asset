@@ -7,6 +7,7 @@ TagManager:
   - Pixie
   - Unicorn
   - Tree
+  - Gnome
   layers:
   - Default
   - TransparentFX
