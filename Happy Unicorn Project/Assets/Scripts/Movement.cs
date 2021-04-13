@@ -46,6 +46,11 @@ public class Movement : MonoBehaviour
     public int uniMaxHP = 5;
     public int currentHP;
 
+    private Rigidbody2D rb2d;
+    private Animator anim;
+
+
+
     private void Awake()
     {
         chargeNumber = 0;
@@ -60,15 +65,21 @@ public class Movement : MonoBehaviour
     {
         rigidBody = GetComponent<Rigidbody2D>();
         currentHP = uniMaxHP;
+
+        rb2d = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        anim.SetFloat("speed", Mathf.Abs(rigidBody.velocity.x));
+        anim.SetFloat("speed", Mathf.Abs(rb2d.velocity.y));
+
         if (currentHP <= 0)
         {
             SceneManager.LoadScene("GameOver");
-        }
+        }   
 
         float delta = Time.deltaTime * 1000;
         
@@ -114,19 +125,23 @@ public class Movement : MonoBehaviour
 
         if (Input.GetKey(upButton))
         {
+            
             uniDirection = Direction.UP;
         }
         else if (Input.GetKey(downButton))
         {
+            
             uniDirection = Direction.DOWN;
         }
 
         if (Input.GetKey(leftButton))
         {
+            
             uniDirection = Direction.LEFT;
         }
         else if (Input.GetKey(rightButton))
         {
+            
             uniDirection = Direction.RIGHT;
         }
 
@@ -153,15 +168,19 @@ public class Movement : MonoBehaviour
         {
             default: break;
             case Direction.UP:
+               
                 currentSpeedV = baseSpeed;
                 break;
             case Direction.DOWN:
+                
                 currentSpeedV = -baseSpeed;
                 break;
             case Direction.LEFT:
+                
                 currentSpeedH = -baseSpeed;
                 break;
             case Direction.RIGHT:
+                
                 currentSpeedH = baseSpeed;
                 break;
         }

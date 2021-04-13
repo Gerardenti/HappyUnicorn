@@ -17338,6 +17338,7 @@ GameObject:
   - component: {fileID: 1928068937}
   - component: {fileID: 1928068938}
   - component: {fileID: 1928068939}
+  - component: {fileID: 1928068940}
   m_Layer: 0
   m_Name: Unicorn
   m_TagString: Unicorn
@@ -17478,6 +17479,25 @@ MonoBehaviour:
   iTimer: 0
   uniMaxHP: 5
   currentHP: 0
+--- !u!95 &1928068940
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1928068934}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 22ab5eb621922c54e8cf4c23456ebab7, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1001 &1943319413
 PrefabInstance:
   m_ObjectHideFlags: 0

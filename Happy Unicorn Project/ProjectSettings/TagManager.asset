@@ -6,15 +6,8 @@ TagManager:
   tags:
   - Pixie
   - Unicorn
-<<<<<<< HEAD
-  - Enemy
-=======
   - Tree
-<<<<<<< HEAD
->>>>>>> main
-=======
   - Gnome
->>>>>>> main
   layers:
   - Default
   - TransparentFX
