@@ -35,6 +35,8 @@ public class Movement : MonoBehaviour
 
     public int chargeNumber;
 
+    bool runningTimer = false;
+
     public float timer = 0.0f;
 
     private void Awake()
@@ -55,10 +57,28 @@ public class Movement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float delta = Time.deltaTime * 1000;
-        timer += Time.deltaTime;
 
-        float speedBoost = 0;
+        float delta = Time.deltaTime * 1000;
+        
+        if (runningTimer == true)
+        {
+            timer += Time.deltaTime;
+            if (timer < 2.0f)
+            {
+                baseSpeed = 0.7f;
+                sprite.color = new Color(1, 0.9f, 0, 1);
+            }
+            else if (timer >= 2.0f)
+            {
+                baseSpeed = 0.3f;
+                sprite.color = new Color(1, 1, 1, 1);
+                runningTimer = false;
+            }
+        } else
+        {
+            timer = 0;
+        }
+
         uniDirection = Direction.NONE;
 
         if (Input.GetKey(upButton))
@@ -81,17 +101,8 @@ public class Movement : MonoBehaviour
 
         if (Input.GetKey(hornButton) && numCharge > 0)
         {
-            speedBoost = baseSpeed;
-            baseSpeed = baseSpeed + speedBoost;
-            sprite.color = new Color(1, 0.9f, 0, 1);
             numCharge--;
-        }
-
-        if (timer >= 5.0f)
-        {
-            baseSpeed = 0.3f;
-            sprite.color = new Color(1, 1, 1, 1);
-            timer = 0;
+            runningTimer = true;
         }
 
         if (Input.GetKey(quitButton))
@@ -148,5 +159,12 @@ public class Movement : MonoBehaviour
             other.gameObject.SetActive(false);
         }
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Tree"))
+        {
+            
+        }
+    }
 }
-//
