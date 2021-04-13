@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Movement : MonoBehaviour
 {
@@ -37,7 +38,13 @@ public class Movement : MonoBehaviour
 
     bool runningTimer = false;
 
+    bool invulTimer = false;
+
     public float timer = 0.0f;
+    public float iTimer = 0.0f;
+
+    public int uniMaxHP = 5;
+    public int currentHP;
 
     private void Awake()
     {
@@ -45,18 +52,23 @@ public class Movement : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
+            //DontDestroyOnLoad(gameObject);
         }
     }
     // Start is called before the first frame update
     void Start()
     {
         rigidBody = GetComponent<Rigidbody2D>();
+        currentHP = uniMaxHP;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (currentHP <= 0)
+        {
+            SceneManager.LoadScene("GameOver");
+        }
 
         float delta = Time.deltaTime * 1000;
         
@@ -78,6 +90,25 @@ public class Movement : MonoBehaviour
         {
             timer = 0;
         }
+
+        /*if (invulTimer == true)
+        {
+            iTimer += Time.deltaTime;
+            if (iTimer > 0.4f && iTimer < 1.0f)
+            {
+                sprite.color = new Color(1, 1, 1, 1);
+            }
+            else if (iTimer >= 1.0f)
+            {
+                iTimer = 0;
+                //invulTimer = false;
+                DamagedByGnome();
+            }
+        }
+        else
+        {
+            iTimer = 0;
+        }*/
 
         uniDirection = Direction.NONE;
 
@@ -153,10 +184,64 @@ public class Movement : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
+        float delta = Time.fixedDeltaTime * 1000;
+
         if (other.tag == "Pixie"){
             numCharge++;
             chargePixie.chargeNumber++;
             other.gameObject.SetActive(false);
+        }
+        if (other.tag == "Gnome") {
+            DamagedByGnome();
+            invulTimer = true;
+        }
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.tag == "Gnome")
+        {
+            sprite.color = new Color(1, 1, 1, 1);
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (invulTimer == true && collision.CompareTag("Gnome")) {
+            iTimer += Time.deltaTime;
+            if (iTimer > 0.4f && iTimer < 1.0f) {
+                sprite.color = new Color(1, 1, 1, 1);
+            } else if (iTimer >= 1.0f) {
+                //iTimer = 0;
+                invulTimer = false;
+                //DamagedByGnome();
+            }
+        } else if (!collision.CompareTag("Gnome")) {
+            invulTimer = false;
+            iTimer = 0;
+        }
+    }
+
+    void DamagedByGnome()
+    {
+        sprite.color = new Color(1, 0, 0, 1);
+        Hurt(1);
+        /*timer += Time.deltaTime;
+        if (timer == 0)
+        {
+            currentHP--;
+        }
+        else if (timer >= 1)
+        {
+            timer = 0;
+        }*/
+    }
+
+    public void Hurt(int damage)
+    {
+        currentHP -= damage;
+        if (currentHP <= 0)
+        {
+            SceneManager.LoadScene("GameOver");
         }
     }
 
