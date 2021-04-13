@@ -13,6 +13,8 @@ public class Movement : MonoBehaviour
     private float currentSpeedH = 0.0f;
     private Rigidbody2D rigidBody;
 
+    public SpriteRenderer sprite;
+
     public ChargePixie chargePixie;
 
     //public bool onFloor;
@@ -20,14 +22,20 @@ public class Movement : MonoBehaviour
 
     public static Movement Instance{get; private set;}
 
+    private bool faceR = true;
+
     private KeyCode upButton = KeyCode.W;
     private KeyCode leftButton = KeyCode.A;
     private KeyCode downButton = KeyCode.S;
     private KeyCode rightButton = KeyCode.D;
 
-    //private KeyCode hornButton = KeyCode.P;
+    private KeyCode quitButton = KeyCode.Escape;
+
+    private KeyCode hornButton = KeyCode.P;
 
     public int chargeNumber;
+
+    public float timer = 0.0f;
 
     private void Awake()
     {
@@ -48,6 +56,9 @@ public class Movement : MonoBehaviour
     void Update()
     {
         float delta = Time.deltaTime * 1000;
+        timer += Time.deltaTime;
+
+        float speedBoost = 0;
         uniDirection = Direction.NONE;
 
         if (Input.GetKey(upButton))
@@ -66,6 +77,26 @@ public class Movement : MonoBehaviour
         else if (Input.GetKey(rightButton))
         {
             uniDirection = Direction.RIGHT;
+        }
+
+        if (Input.GetKey(hornButton) && numCharge > 0)
+        {
+            speedBoost = baseSpeed;
+            baseSpeed = baseSpeed + speedBoost;
+            sprite.color = new Color(1, 0.9f, 0, 1);
+            numCharge--;
+        }
+
+        if (timer >= 5.0f)
+        {
+            baseSpeed = 0.3f;
+            sprite.color = new Color(1, 1, 1, 1);
+            timer = 0;
+        }
+
+        if (Input.GetKey(quitButton))
+        {
+            Application.Quit();
         }
     }
 
@@ -93,8 +124,22 @@ public class Movement : MonoBehaviour
                 break;
         }
         rigidBody.velocity = new Vector2(currentSpeedH, currentSpeedV) * delta;
-    }
 
+        if (faceR == false && currentSpeedH == baseSpeed)
+        {
+            Face();
+        } else if (faceR == true && currentSpeedH == -baseSpeed)
+        {
+            Face();
+        }
+    }
+    void Face()
+    {
+        faceR = !faceR;
+        Vector3 Flip = transform.localScale;
+        Flip.x *= -1;
+        transform.localScale = Flip;
+    }
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.tag == "Pixie"){

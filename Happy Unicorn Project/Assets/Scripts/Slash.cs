@@ -18,15 +18,15 @@ public class Slash : MonoBehaviour
         transform.position += new Vector3(Mov.x, Mov.y, 0) * speed * Time.deltaTime;
     }
 
-    IEnumerator OnTriggerEnter2D (Collider col)
+    IEnumerator OnTriggerEnter2D (Collider2D collision)
     {
-        if (col.tag == "Object") 
+        if (collision.tag == "Object") 
         {
             yield return new WaitForSeconds(waitBeforeDestroy);
             Destroy(gameObject);
-        }else if (col.tag != "Unicorn" && col.tag != "Attack")
+        }else if (collision.tag != "Unicorn" && collision.tag != "Attack")
         {
-            if (col.tag == "Enemy") col.SendMessage("Attacked");
+            if (collision.tag == "Enemy") collision.SendMessage("Attacked");
             Destroy(gameObject);
         }
 
