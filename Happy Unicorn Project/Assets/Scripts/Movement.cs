@@ -74,7 +74,7 @@ public class Movement : MonoBehaviour
     void Update()
     {
         anim.SetFloat("speed", Mathf.Abs(rigidBody.velocity.x));
-        anim.SetFloat("speed", Mathf.Abs(rb2d.velocity.y));
+        //anim.SetFloat("speed", Mathf.Abs(rb2d.velocity.y));
 
         if (currentHP <= 0)
         {
@@ -147,14 +147,19 @@ public class Movement : MonoBehaviour
 
         if (Input.GetKey(hornButton) && numCharge > 0)
         {
-            numCharge--;
             runningTimer = true;
+        }
+
+        if (Input.GetKeyUp(hornButton) && numCharge > 0)
+        {
+            numCharge--;
         }
 
         if (Input.GetKey(quitButton))
         {
             Application.Quit();
         }
+
     }
 
     private void FixedUpdate()
@@ -213,6 +218,10 @@ public class Movement : MonoBehaviour
         if (other.tag == "Gnome") {
             DamagedByGnome();
             invulTimer = true;
+        }
+        if (other.tag == "Boss")
+        {
+            SceneManager.LoadScene("Victory");
         }
     }
     private void OnTriggerExit2D(Collider2D collision)

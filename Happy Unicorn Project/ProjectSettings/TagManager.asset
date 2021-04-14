@@ -8,6 +8,7 @@ TagManager:
   - Unicorn
   - Tree
   - Gnome
+  - Boss
   layers:
   - Default
   - TransparentFX
