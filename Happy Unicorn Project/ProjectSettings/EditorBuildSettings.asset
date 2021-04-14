@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Victory.unity
     guid: 1e335bb8abdfe8a43a8ead3f05704b49
+  - enabled: 1
+    path: Assets/Scenes/TimeOut.unity
+    guid: a8eb914a22957944db0b1eb32dc71c42
   m_configObjects: {}

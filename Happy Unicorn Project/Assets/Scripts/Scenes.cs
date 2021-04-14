@@ -13,16 +13,13 @@ public class Scenes: MonoBehaviour
         if (Input.GetKey(startButton))
         {
             Scene scene = SceneManager.GetActiveScene();
-            if (scene.name == "Title")
-            {
+            if (scene.name == "Title") {
                 SceneManager.LoadScene("SampleScene");
-            }
-            else if (scene.name == "GameOver")
-            {
+            } else if (scene.name == "GameOver") {
                 SceneManager.LoadScene("Title");
-            }
-            else if (scene.name == "Victory")
-            {
+            } else if (scene.name == "Victory") {
+                SceneManager.LoadScene("Title");
+            } else if (scene.name == "TimeOut") {
                 SceneManager.LoadScene("Title");
             }
         }

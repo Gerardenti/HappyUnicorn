@@ -18,6 +18,12 @@ public class EnemyChase : MonoBehaviour
     [Tooltip("vida actual")]
     public int hp;
 
+    private bool faceR = true;
+
+    private Animator anim;
+
+    private Rigidbody2D rigidBody;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -28,11 +34,22 @@ public class EnemyChase : MonoBehaviour
         /*main = (Camera)GameObject.FindGameObjectWithTag("MainCamera") as Camera;*/
 
         hp = maxHp;
+
+        rigidBody = GetComponent<Rigidbody2D>();
+
+        anim = GetComponent<Animator>();
+
+        anim.SetFloat("speed", Mathf.Abs(rigidBody.velocity.y));
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (hp <= 0)
+        {
+            Destroy(gameObject);
+        }
+
         Vector3 target = initialPosition;
 
         float dist = Vector3.Distance(player.transform.position, transform.position);
@@ -42,6 +59,25 @@ public class EnemyChase : MonoBehaviour
         transform.position = Vector3.MoveTowards(transform.position, target, fixedSpeed);
 
         Debug.DrawLine(transform.position, target, Color.green);
+    }
+
+    private void FixedUpdate()
+    {
+        if (faceR == false && transform.position.x == speed)
+        {
+            Face();
+        }
+        else if (faceR == true && transform.position.x == -speed)
+        {
+            Face();
+        }
+    }
+    void Face()
+    {
+        faceR = !faceR;
+        Vector3 Flip = transform.localScale;
+        Flip.x *= -1;
+        transform.localScale = Flip;
     }
 
     private void OnDrawGizmos()
@@ -55,19 +91,9 @@ public class EnemyChase : MonoBehaviour
         if (--hp <= 0) Destroy(gameObject);
     }
 
-    /*
-    void OnGUI()
+    public void TakeDamage(int damage)
     {
-        Vector2 pos = Camera.main.WorlsToScreenPoint(transform.position);
-
-        GUI.Box(
-            new Rect(
-                pos.x - 20,
-                Screen.height - pos.y + 60,
-                40,
-                24
-                ), hp + "/" + maxHp
-            );
+        hp -= damage;
+        Debug.Log("damage TAKE!");
     }
-    */
 }
